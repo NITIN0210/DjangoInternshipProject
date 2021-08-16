@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+{% block title%}Teacher View Messages{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+	<div class="card col-md-6 mx-auto shadow-lg">
+		<h3>Student View</h3>
+		<div class="row">
+			<div class="col-sm h-100">
+				<img src={{R.simage.url}} height="220px">
+			</div>
+			<div class="col">
+				<table class="table table-borderless">
+			<tr>
+				<th>Sname</th>
+				<td>{{R.sname}}</td>
+			</tr>
+			<tr>
+				<th>Sid</th>
+				<td>{{R.sid}}</td>
+			</tr>
+			<tr>
+				<th>Email</th>
+				<td>{{R.email}}</td>
+			</tr>
+			<tr>
+				<th>Mobile</th>
+				<td>{{R.mobile}}</td>
+			</tr>
+			<tr>
+				<th>Gender</th>
+				<td>{{R.gender}}</td>
+			</tr>
+			
+		</table>
+			</div>
+		</div>
+		<a href="{% url 'tvmsg' R.sid %}" class="form-control btn btn-outline-info my-2">Academics and mesg</a>
+		<!-- <a href="{% url 'slist' %}" class="form-control btn btn-outline-primary my-2">Back to list</a>
+		<a href="{% url 'tvmsg' R.sid %}" class="form-control btn btn-outline-info my-2">View Previous Messages</a> -->
+	</div>	
+</div>
+{% endblock %}

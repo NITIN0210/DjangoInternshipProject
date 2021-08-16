@@ -1,0 +1,72 @@
+{% extends 'app/base.html' %}
+{% block title%}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+
+{% if a.role == 1%}
+	<h3>Teacher Profile</h3>
+	<div class="card col-md-6 mx-auto shadow-lg">
+		<img class="card-img-top" src="{{b.timage.url}}" alt="Profile image" style="width:100%">
+		
+		<div class="card-body">
+			<h4 class="card-title">{{a.username}}</h4>
+			<p class="card-text">Some example text some example text. {{a.username}} is an 
+				{% if a.role == 1 %}
+				<span>Teacher</span>
+				{% endif %}
+			</p>
+			<br>
+			Email:
+			<p class="card-text">
+				{{b.email}}
+			</p>
+			<br>
+			Phone:
+			<p class="card-text">
+				{{b.mobile}}
+			</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<a href="{% url 'pu' %}" class="form-control btn btn-outline-success mx-2 my-2">Update</a>
+		</div>
+	</div>
+
+
+{% elif request.user.role == 2 %}
+	<h3>Student Profile</h3>
+	<div class="card col-md-6 mx-auto shadow-lg">
+		<img class="card-img-top" src="{{b.simage.url}}" alt="Profile image" style="width:100%">
+		
+		<div class="card-body">
+			<h4 class="card-title">{{b.sname}}</h4>
+			<p class="card-text">Some example text some example text. {{b.sname}} is an 
+				{% if a.role == 1 %}
+				<span>Student</span>
+				{% endif %}
+			</p>
+			<br>
+			mobile:
+			<p class="card-text">
+				{{b.mobile}}
+			</p>
+			<br>
+			email:
+			<p class="card-text">
+				{{b.email}}
+			</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<a href="{% url 'pu' %}" class="form-control btn btn-outline-success mx-2 my-2">Update</a>
+		</div>
+	</div>
+
+{% endif %}
+</div>
+{% endblock %}
+
+

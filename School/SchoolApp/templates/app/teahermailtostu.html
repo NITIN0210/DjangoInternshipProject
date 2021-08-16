@@ -1,0 +1,89 @@
+{% extends 'app/base.html' %}
+{% block title%}MessageStudent{% endblock %}
+
+{% block content %}
+<style>
+
+	/* The popup chat - hidden by default */
+	.chat-popup {
+	  display: none;
+	  position: fixed;
+	  bottom: 0;
+	  right: 15px;
+	  border: 3px solid #f1f1f1;
+	  z-index: 9;
+	}
+	/* Add styles to the form container */
+.form-container {
+  max-width: 500px;
+  padding: 1	px;
+  background-color: white;
+}
+
+</style>
+<div class="container mt-4">
+	<div class="card col-md-6 mx-auto shadow-lg">
+		<h3>Message Studentt</h3>
+		<div class="row">
+			<div class="col">
+				Student Name
+				<b>{{a.sname}}</b>
+				<br>
+
+				SId
+				<b>{{a.sid}}</b>
+
+			</div>
+			<div class="col">
+				Teacher Name
+				<b>{{b.tname}}</b>
+				<br>
+				Teacher Id
+				<b>{{b.tid}}</b>
+
+			</div>
+		</div>
+		<button class="open-button form-control my-2 btn btn-outline-success" onclick="openForm()">Message</button>
+		<div class="row chat-popup" id='myForm'>
+			<div class="col">
+				<form method="post" class="form-container">
+					<legend>Message to Student</legend>
+					{% csrf_token %}
+					<input type="text" name="snmail" class="form-control my-2" placeholder="enter mailid"value='{{b.email}}' readonly>
+					<input type="text" name="sub" class="form-control my-2" placeholder="enter subject">
+					<textarea name="msg" rows='5' class="form-control my-2" placeholder="enter message...."></textarea>
+					<div class="row">
+						<div class="col">
+							<input type="reset" value="reset" class="form-control my-2 btn btn-outline-primary">
+						</div>
+						<div class="col">
+							<input type="submit" value="send" class="form-control my-2 btn btn-outline-success">
+						</div>
+						<div class="col">
+							<button type="button" class="btn cancel form-control my-2  btn-outline-danger" onclick="closeForm()" >Close</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			function openForm() {
+			  document.getElementById("myForm").style.display = "block";
+			}
+
+			function closeForm() {
+			  document.getElementById("myForm").style.display = "none";
+			}
+		</script>
+
+		<div class="row">
+			<div class="col">
+				
+			</div>
+		</div>
+		
+		<a href="{% url 'hm'%}" class="form-control btn btn-outline-primary my-2">Back to list</a>
+		<a href="{% url 'svmsg' %}" class="form-control btn btn-outline-info my-2">View Previous Messages</a>
+	</div>	
+</div>
+{% endblock %}

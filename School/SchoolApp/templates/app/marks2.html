@@ -1,0 +1,48 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Marks2{% endblock %}
+
+
+{% block content%}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="card col-md shadow-lg mx-2">
+            <div class="card-body">
+                <h3 class="text-center text-light bg-danger p-2 border rounded">Marks</h3>    
+                <table class="table table-borderless table-hover">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{b}}
+                        <tr>
+                            <td>Student Id-StudentName</td>
+                            <td>English</td>
+                            <td>Telugu</td>
+                            <td>Maths</td>
+                            <td>Science</td>
+                            <td>Social</td>
+                        </tr>
+                        {% for i in l %}
+                            <tr>
+                                <td>
+                                    <input type="text" name="{{i}}" value='{{i}}' class="form-control my-2" readonly>
+                                </td>
+                                {% for j in f %}
+                                    <td>
+                                        <input type="text" name="{{j}}{{i}}" class="form-control my-2" required>
+                                    </td>                              
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <div class="col">
+                                <input type="submit" value="Post" name='submit' class="form-control btn btn-outline-success mx-2 my-2">
+                            </div>
+                        </tr>
+                    </form>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

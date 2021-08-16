@@ -1,0 +1,65 @@
+{% extends 'app/base.html' %}
+{% block title%} ViewMessages {% endblock %}
+
+{% block content %}
+<style>
+
+</style>
+<div class="container">
+	
+	<div class='row my-3'>
+	    <div class="col-md-5 border border-dark mx-auto">
+	    	<div class="card col-md-6 mx-auto my-2">
+	    	</div>
+	    	<div class="col-sm">
+	    		<img class="mg-fluid img-thumbnail w-50 rounded-circle" src="{{b.timage.url}}" alt="Profile image" style="width:100%">
+	    		<div class=" float-right ">
+	    			<b>with Teacher</b>
+		    		{{b.tname}}<br><hr>
+		    		{{b.email}}
+		    	</div>
+	    	</div>
+	      	<div class="card col-md-6 mx-auto my-2">
+	    	</div>
+	    	<table class="table table-striped">
+	            {% for i in c %}
+		            {% if a.sid == i.senderid %}
+		            	<tr>
+		            		<td>
+					            <div class="card col-md-6 mx-auto shadow-lg my-2 float-right border border-primary rounded rounded-3">
+					            	
+					            	<b>{{i.sub}}</b>
+					            	<hr>
+					            	{{i.body}}
+					            	
+					            	<br>
+					            	<i class='text-muted'>{{i.date}}</i>
+					            	<br>
+					            </div>
+					            <br>
+					        </td>
+				        </tr>
+			        {% else%}
+			        	<tr>
+			        		<td>
+					        	<div class="card col-md-6 mx-auto shadow-lg my-2 float-left border border-success rounded rounded-3">
+									<b>{{i.sub}}</b>
+					            	<hr>
+					            	{{i.body}}
+					            	
+					            	<br>
+					            	<i class='text-muted'>{{i.date}}</i>
+					            	<br>
+								</div>
+								<br>
+							</td>
+						</tr>
+			        {% endif %}
+	            {% endfor %}
+	        </table>
+            
+	    </div>
+	</div>
+	<a href="{% url 'smailtot'%}" class="form-control btn btn-outline-primary my-2">Back to Messaging Page</a>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Attendance{% endblock %}
+
+
+{% block content%}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="card col-md shadow-lg mx-2">
+            <form method="post">
+                {% csrf_token %}
+                <div class="card-body">
+
+                    <h3 class="text-center text-light bg-danger p-2 border rounded">Attendance</h3>
+                    Select Today's Date<input type="date" name="date" class="form-control">
+                    <table class="table table-borderless table-hover">
+                        <tr>
+                            <td>Student Id</td>
+                            <td>Name Of Student</td>
+                            <td>mark Attendance</td>
+                        </tr>
+                        {% for i in a %}
+                            <tr>
+                                <td>{{i.sid}}</td>
+                                <td>{{i.sname}}</td>
+                                <!-- <td>
+                                    <input type="radio" name="att{{forloop.counter}}" value="p">Present
+                                    <input type="radio" name="att{{forloop.counter}}" value="a">Absent
+                                </td> -->
+                                <td>
+                                    <input type="checkbox" name="{{i.sid}}">
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+                    <div class="row">
+                        <div class="col">
+                            <input type="reset" name="reset" class="form-control btn btn-outline-info mx-2 my-2">
+                        </div>
+                        <div class="col">
+                            <input type="submit" value="Post" class="form-control btn btn-outline-success mx-2 my-2">
+                        </div>                                
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,85 @@
+{% extends 'app/base.html' %}
+
+{% block title %}StudentList{% endblock %}
+
+
+{% block content%}
+{% if messages %}
+{%for m in messages %}
+<div class="alert alert-{{m.tags}} alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  {{m}}
+
+</div>
+{% endfor %}
+{% endif %}
+<div class="container mt-4">
+	<div class="row">
+		<div class="col-md-4 card shadow-lg mx-2 h-100">
+			<div class="card-body">
+				<form method="post" enctype="multipart/form-data" name='myform'>
+					{% csrf_token %}
+				<script type="text/javascript">
+					window.onload=pswd;
+					function pswd(){
+						document.myform.password1.value="Myproject@123";
+						document.myform.password2.value="Myproject@123";
+						document.myform.pswd.value="Myproject@123";
+					}
+					</script>
+					<input type="text" name="pswd" hidden>
+					<h3 class="text-center text-light bg-secondary p-2 border rounded">Add Student</h3>
+					{% for i in a %}
+					{{i}}
+					{% endfor %}
+					{% for j in b %}
+							{% if forloop.counter == 1 %}
+								<select class="form-control my-2" name='tsid'>
+									<option value="{{row1.id}}">{{row1}}</option>
+								</select>
+							{% elif forloop.counter >= 2 %}
+								{{j}}
+							{% endif %}
+							
+						{% endfor %}
+					<div>
+						 <div class="row">
+								<div class="col">
+									<input type="reset" name="reset" class="form-control btn btn-outline-info mx-2 my-2">
+								</div>
+								<div class="col">
+									<input type="submit" value="create" class="form-control btn btn-outline-success mx-2 my-2">
+								</div>
+								
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+
+		<div class="card col-md shadow-lg mx-2">
+			<div class="card-body">
+				<h3 class="text-center text-light bg-danger p-2 border rounded">List of Students</h3>
+				<table class="table table-borderless table-hover">
+					<tr class="bg-dark text-light">
+						<th>Student name</th>	
+						<th>SId</th>	
+						<th>Operations</th>
+					</tr>
+					{% for r in rows %}
+						<tr>
+							<td><a href="{% url 'rsv' r.sid %}">{{r.sname}}</a></td>
+							<td>{{r.sid}}</td>
+							<td>
+								<a href="{% url 'stup' r.sid %}" class="btn btn-outline-warning">Update</a>
+								<a href="{% url 'stdl' r.sid %}" class="btn btn-outline-danger">Delete</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{%endblock%}

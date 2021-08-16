@@ -1,0 +1,358 @@
+{% extends 'app/base.html' %}
+{% block title%} ViewMessages {% endblock %}
+
+{% block content %}
+<style>
+
+	/* The popup chat - hidden by default */
+	.chat-popup {
+	  display: none;
+	  position: fixed;
+	  bottom: 0;
+	  right: 15px;
+	  border: 3px solid #f1f1f1;
+	  z-index: 9;
+	}
+	/* Add styles to the form container */
+.form-container {
+  max-width: 500px;
+  padding: 1	px;
+  background-color: white;
+}
+
+</style>
+
+<style type="text/css">
+	.progress {
+  width: 150px;
+  height: 150px;
+  background: none;
+  position: relative;
+}
+
+.progress::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid #eee;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.progress>span {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.progress .progress-left {
+  left: 0;
+}
+
+.progress .progress-bar {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border-width: 6px;
+  border-style: solid;
+  position: absolute;
+  top: 0;
+}
+
+.progress .progress-left .progress-bar {
+  left: 100%;
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-left: 0;
+  -webkit-transform-origin: center left;
+  transform-origin: center left;
+}
+
+.progress .progress-right {
+  right: 0;
+}
+
+.progress .progress-right .progress-bar {
+  left: -100%;
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+  border-right: 0;
+  -webkit-transform-origin: center right;
+  transform-origin: center right;
+}
+
+.progress .progress-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/*
+*
+* ==========================================
+* FOR DEMO PURPOSE
+* ==========================================
+*
+*/
+
+	
+</style>
+<script type="text/javascript">
+	$(function() {
+
+  $(".progress").each(function() {
+
+    var value = $(this).attr('data-value');
+    var left = $(this).find('.progress-left .progress-bar');
+    var right = $(this).find('.progress-right .progress-bar');
+
+    if (value > 0) {
+      if (value <= 50) {
+        right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+      } else {
+        right.css('transform', 'rotate(180deg)')
+        left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+      }
+    }
+
+  })
+
+  function percentageToDegrees(percentage) {
+
+    return percentage / 100 * 360
+
+  }
+
+});
+</script>
+<div class="container-fluid">
+	<a href="{% url 'slist'%}" class="form-control btn btn-outline-primary my-2">Back To Student List</a>
+	<div class="col mx-auto">
+			<h3>Message</h3>
+			<div class="row">
+			<div class="col">
+				Student Name
+				<b>{{a.sname}}</b>
+				<br>
+
+				SId
+				<b>{{a.sid}}</b>
+
+			</div>
+			<div class="col">
+				Teacher Name
+				<b>{{b.tname}}</b>
+				<br>
+				Teacher Id
+				<b>{{b.tid}}</b>
+
+			</div>
+		</div>
+		<button class="open-button form-control my-2 btn btn-outline-success" onclick="openForm()">Message</button>
+		<div class="row chat-popup" id='myForm'>
+			<div class="col">
+				<form method="post" class="form-container">
+					<legend>Message to Student</legend>
+					{% csrf_token %}
+					<input type="text" name="snmail" class="form-control my-2" placeholder="enter mailid"value='{{d}}' readonly>
+					<input type="text" name="sub" class="form-control my-2" placeholder="enter subject">
+					<textarea name="msg" rows='5' class="form-control my-2" placeholder="enter message...."></textarea>
+					<div class="row">
+						<div class="col">
+							<input type="reset" value="reset" class="form-control my-2 btn btn-outline-primary">
+						</div>
+						<div class="col">
+							<input type="submit" value="send to parent" class="form-control my-2 btn btn-outline-success">
+						</div>
+						<div class="col">
+							<button type="button" class="btn cancel form-control my-2  btn-outline-danger" onclick="closeForm()" >Close</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			function openForm() {
+			  document.getElementById("myForm").style.display = "block";
+			}
+
+			function closeForm() {
+			  document.getElementById("myForm").style.display = "none";
+			}
+		</script>
+
+		
+		</div>
+	<div class="row my-1 ">
+		<div class="col border border-dark mx-auto">
+	    	<h3>Previous Messages</h3>
+	    	<div class="card col-md-6 mx-auto my-2">
+	    	</div>
+	    	<div class="col-sm">
+	    		<img class="mg-fluid img-thumbnail w-50 rounded-circle" src="{{b.timage.url}}" alt="Profile image" style="width:100%">
+	    		<div class=" float-right ">
+	    			<b>with Teacher</b>
+		    		{{b.tname}}<br><hr>
+		    		{{b.email}}
+		    	</div>
+	    	</div>
+	      	<div class="card col-md-6 mx-auto my-2">
+	    	</div>
+	    	<table class="table table-striped">
+	            {% for i in c %}
+		            {% if b.tid == i.senderid %}
+		            	<tr>
+		            		<td>
+					            <div class="card col-md-6 mx-auto shadow-lg my-2 float-right border border-primary rounded rounded-3">
+					            	
+					            	<b>{{i.sub}}</b>
+					            	<hr>
+					            	{{i.body}}
+					            	
+					            	<br>
+					            	<i class='text-muted'>{{i.date}}</i>
+					            	<br>
+					            </div>
+					            <br>
+					        </td>
+				        </tr>
+			        {% else%}
+			        	<tr>
+			        		<td>
+					        	<div class="card col-md-6 mx-auto shadow-lg my-2 float-left border border-success rounded rounded-3">
+									<b>{{i.sub}}</b>
+					            	<hr>
+					            	{{i.body}}
+					            	
+					            	<br>
+					            	<i class='text-muted'>{{i.date}}</i>
+					            	<br>
+								</div>
+								<br>
+							</td>
+						</tr>
+			        {% endif %}
+	            {% endfor %}
+	        </table>
+		</div>
+
+		<div class="col border border-dark mx-auto">
+			<h3>Academics</h3>
+			<div class="row border border-grey mx-auto">
+				<h3>Marks</h3>
+				<div class="row">
+			<div class="col">
+				<table class="table table-borderless">
+			<tr>
+				<th>Sname</th>
+				<td>{{a.sname}}</td>
+			</tr>
+			 <tr>
+				<th>SId</th>
+				<td>{{a.sid}}</td>
+			</tr>
+			
+			
+		</table>
+			</div>
+			
+		</div>
+		<div class="col">
+            <table class="table table-hover">
+				<tr>
+					<th>Term</th>
+					<th>English</th>
+					<th>Telugu</th>
+					<th>Maths</th>
+					<th>Science</th>
+					<th>Social</th>
+				</tr>
+				{% for i in sa %}
+					{% if i.term != 'DF' %}
+						<tr>
+							<td>{{i.term}}</td>
+							<td>{{i.english}}</td>
+							<td>{{i.telugu}}</td>
+							<td>{{i.maths}}</td>
+							<td>{{i.science}}</td>
+							<td>{{i.social}}</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+			</div>
+			<div class="row border border-grey mx-auto">
+				<h3>Attendance</h3>
+				<div class="row">
+					<div class="col">
+						<table class="table table-borderless">
+							<tr>
+								<th>Sname</th>
+								<td>{{a.sname}}</td>
+							</tr>
+							 <tr>
+								<th>SId</th>
+								<td>{{a.sid}}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="col">
+		            <table class="table table-hover">
+		            	<tr>
+							<th>Attendance</th>
+							<th>Date</th>
+						</tr>
+						{% for i in wd %}
+							{% if i.dates in l %}
+								<tr>
+									<td><span class="badge badge-danger">Absent</span></td>
+									<td>{{i.dates}}</td>
+									
+								</tr>
+							{% else %}
+								<tr>
+									<td><span class="badge badge-success">Present</span></td>
+									<td>{{i.dates}}</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+					</table>
+					<!-- Progress bar 1 -->
+        <div class="progress mx-auto" data-value='{{per}}'>
+            <span class="progress-left">
+                <span class="progress-bar border-primary"></span>
+            </span>
+            <span class="progress-right">
+                <span class="progress-bar border-primary"></span>
+            </span>
+            <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                <div class="h2 font-weight-bold">{{per}}<sup class="small">%</sup></div>
+            </div>
+        </div>
+        <!-- END -->
+
+        <!-- Demo info -->
+        <div class="row text-center mt-4">
+            <div class="col-6 border-right">
+                <div class="h4 font-weight-bold mb-0">{{attC.attpresent}}</div><span class="small text-gray">Present Count</span>
+            </div>
+            <div class="col-6">
+                <div class="h4 font-weight-bold mb-0">{{attC.attabsent}}</div><span class="small text-gray">Absent Count</span>
+            </div>
+        </div>
+        <!-- END -->	
+				</div>
+			</div>
+			
+		</div>
+		
+	</div>
+</div>
+{% endblock %}

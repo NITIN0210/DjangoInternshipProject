@@ -1,0 +1,21 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Marks{% endblock %}
+
+
+{% block content%}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="card col-md shadow-lg mx-2">
+            <form method="post">
+                {% csrf_token %}
+                {% for i in a %}
+                {{i}}
+                {% endfor %}
+                <a href="{% url 'mm'  %}"><input type="submit" value="ConfirmTerm" class="form-control btn btn-outline-success mx-2 my-2"></a>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}
